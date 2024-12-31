@@ -82,7 +82,7 @@ jobs:
         run: sudo apt-get -qq update
         if: matrix.os == 'linux'
       - name: Install OS deps
-        run: sudo apt-get -y install freeglut3-dev libxrandr-dev libc6:i386 libstdc++:i386
+        run: sudo apt-get -y install freeglut3-dev libxrandr-dev gcc-multilib g++-multilib
         if: matrix.os == 'linux'
       - name: Set ORX environment variable
         run: echo ORX=%CD%\code>> %GITHUB_ENV%
@@ -115,5 +115,3 @@ jobs:
         working-directory: tools/orxFontGen/build/${{matrix.os}}/gmake
         run: ${{matrix.make}} config=${{matrix.config}}${{matrix.platform}}
         if: matrix.os != 'windows'
-
-
