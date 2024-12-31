@@ -25,8 +25,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: microsoft/setup-msbuild@v2
       - name: Setup
         run: ./setup.bat
-      - uses: microsoft/setup-msbuild@v2
       - name: orx build (msbuild)
-        run: msbuild code\build\windows\vs${{ matrix.vsversion }}\orx.sln /p:Platform=${{ matrix.vsplatform }} /p:Configuration=${{ matrix.vsconfig }}
+        working-directory: ${{ env.GITHUB_WORKSPACE }}
+        run: msbuild code\build\windows\vs${{ matrix.vsversion }}\orx.sln
