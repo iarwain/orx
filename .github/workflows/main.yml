@@ -26,7 +26,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: microsoft/setup-msbuild@v2
+        with:
+          msbuild-architecture: ${{matrix.vsplatform}}
       - name: Setup
         run: ./setup.bat
       - name: Build
-        run: msbuild code\build\windows\vs${{ matrix.vsversion }}\orx.sln -t:rebuild -property:Configuration={{ matrix.vsconfig }}
+        run: msbuild code\build\windows\vs${{matrix.vsversion}}\orx.sln -t:rebuild -property:Configuration=${{matrix.vsconfig}}
