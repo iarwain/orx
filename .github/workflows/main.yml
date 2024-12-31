@@ -96,7 +96,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup
-        uses: ./.github/workflows/setup.yml
+        uses: orx/orx/.github/workflows/setup.yml
         with:
           os: ${{matrix.os}}
           setup: ${{matrix.setup}}
