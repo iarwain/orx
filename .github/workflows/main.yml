@@ -61,7 +61,6 @@ jobs:
         include:
           - os: windows
             runner: windows-latest
-            platform: 64
             setup: setup.bat
             init: init.bat
             make: mingw32-make
