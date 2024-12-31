@@ -164,7 +164,7 @@ jobs:
         run: ./setup.sh
       - name: Build engine
         working-directory: code/build/android
-        run: ./gradlew clean assemble
+        run: ./gradlew clean assemble publishAllPublicationsToOrxRepository
       - name: Build demo
         working-directory: code/demo/android
         run: ./gradlew clean assemble
