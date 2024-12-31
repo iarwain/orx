@@ -27,4 +27,4 @@ runs:
         key: orx-extern
     - name: Setup
       run: ./${{inputs.setup}}
-      shell: bash || pwsh
+      shell: bash
