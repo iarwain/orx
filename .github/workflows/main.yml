@@ -65,11 +65,24 @@ jobs:
           - 64
         include:
           - os: windows
+            setup: setup.bat
+          - os: linux
+            setup: setup.sh
+          - os: mac
+            setup: setup.sh
+        exclude:
+          - os: windows
+            runner: ubuntu-latest
+          - os: windows
+            runner: macos-latest
+          - os: linux
             runner: windows-latest
           - os: linux
-            runner: ubuntu-latest
-          - os: mac
             runner: macos-latest
+          - os: mac
+            runner: windows-latest
+          - os: mac
+            runner: ubuntu-latest
     runs-on:
       - ${{matrix.runner}}
     steps:
