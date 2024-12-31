@@ -33,17 +33,15 @@ jobs:
       - uses: microsoft/setup-msbuild@v2
         with:
           msbuild-architecture: ${{matrix.vs-platform}}
-      - name: Set environment variable
+      - name: Set ORX environment variable
         run: echo ORX=%CD%\code>> %GITHUB_ENV%
-      - name: list
-        run: set
-      # - name: Setup
-      #   run: setup.bat
-      # - name: Build engine
-      #   run: msbuild code\build\windows\vs${{matrix.vs-version}}\orx.sln -m -t:rebuild -property:Configuration=${{matrix.vs-config}}
-      # - name: Build tutorials
-      #   run: msbuild tutorial\build\windows\vs${{matrix.vs-version}}\tutorial.sln -t:rebuild -property:Configuration=${{matrix.vs-config}}
+      - name: Setup
+        run: setup.bat
+      - name: Build engine
+        run: msbuild code\build\windows\vs${{matrix.vs-version}}\orx.sln -m -t:rebuild -property:Configuration=${{matrix.vs-config}}
+      - name: Build tutorials
+        run: msbuild tutorial\build\windows\vs${{matrix.vs-version}}\tutorial.sln -t:rebuild -property:Configuration=${{matrix.vs-config}}
       - name: Create project
-        run: echo %CD%\code && set ORX=%CD%\code&& set && init.bat test
+        run: init.bat test
       - name: Build project
-        run: echo %CD%\code && set ORX=%CD%\code&& set && msbuild test\build\windows\vs${{matrix.vs-version}}\test.sln -m -t:rebuild -property:Configuration=${{matrix.vs-config}}
+        run: msbuild test\build\windows\vs${{matrix.vs-version}}\test.sln -m -t:rebuild -property:Configuration=${{matrix.vs-config}}
