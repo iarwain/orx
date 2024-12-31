@@ -40,6 +40,7 @@ jobs:
       - name: Create project
         run: ./init.bat test
       - name: List env
-        run: cat $GITHUB_ENV
+        run: cat %GITHUB_ENV%
+        shell: cmd
       - name: Build project
         run: set ORX=%CD%\code && msbuild test\build\windows\vs${{matrix.vs-version}}\test.sln -m -t:rebuild -property:Configuration=${{matrix.vs-config}} -verbosity:diag
