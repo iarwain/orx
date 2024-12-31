@@ -64,6 +64,7 @@ jobs:
             setup: setup.bat
             init: init.bat
             make: mingw32-make
+            platform: 64
           - os: linux
             runner: ubuntu-latest
             setup: setup.sh
