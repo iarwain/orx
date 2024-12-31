@@ -199,7 +199,7 @@ jobs:
         os:
           - windows
           - linux
-          - mac
+          - mac 
         config:
           # - debug
           # - profile
