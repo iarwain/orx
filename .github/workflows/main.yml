@@ -12,15 +12,15 @@ jobs:
     strategy:
       matrix:
         vsversion:
-          # - 2017
-          - 2019
-          - 2022
+          # '[15.0, 16.0)'
+          - '[16.0, 17.0)'
+          - '[17.0, 18.0)'
         vsconfig:
           - Debug
           # - Profile
           # - Release
         vsplatform:
-          - Win32
+          - x86
           - x64
 
     steps:
@@ -28,6 +28,7 @@ jobs:
       - uses: microsoft/setup-msbuild@v2
         with:
           msbuild-architecture: ${{matrix.vsplatform}}
+          vs-version: ${{matrix.vsversion}}
       - name: Setup
         run: ./setup.bat
       - name: Build
