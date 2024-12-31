@@ -29,4 +29,4 @@ jobs:
       - name: Setup
         run: ./setup.bat
       - name: Build
-        run: msbuild code\build\windows\vs${{ matrix.vsversion }}\orx.sln -t:rebuild -property:Configuration={{ matrix.vsconfig }} -property:Platform={{ matrix.vsplatform }}
+        run: msbuild code\build\windows\vs${{ matrix.vsversion }}\orx.sln -t:rebuild -property:Configuration={{ matrix.vsconfig }}
