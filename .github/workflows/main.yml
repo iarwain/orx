@@ -28,5 +28,5 @@ jobs:
       - uses: microsoft/setup-msbuild@v2
       - name: Setup
         run: ./setup.bat
-      - name: Build {{ matrix.vsversion }} / {{ matrix.vsconfig }} / {{ matrix.vsplatform }}
-        run: msbuild code\build\windows\vs${{ matrix.vsversion }}\orx.sln -t:rebuild -verbosity:diag
+      - name: Build
+        run: msbuild code\build\windows\vs${{ matrix.vsversion }}\orx.sln -t:rebuild -property:Configuration={{ matrix.vsconfig }} -property:Platform={{ matrix.vsplatform }}
