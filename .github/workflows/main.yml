@@ -26,6 +26,9 @@ jobs:
       - uses: microsoft/setup-msbuild@v2
         with:
           msbuild-architecture: ${{matrix.platform}}
+      - name: Set ORX environment variable
+        run: echo ORX=%CD%\code>> %GITHUB_ENV%
+        shell: cmd
       - name: Setup
         run: ./setup.bat
       - name: Build engine
@@ -93,6 +96,10 @@ jobs:
       - name: Install OS deps
         run: sudo apt-get -y install gcc-multilib g++-multilib freeglut3-dev freeglut3-dev:i386 libxrandr-dev libxrandr-dev:i386
         if: matrix.os == 'linux'
+      - name: Set ORX environment variable
+        run: echo ORX=%CD%\code>> %GITHUB_ENV%
+        shell: cmd
+        if: matrix.os == 'windows'
       - name: Setup
         run: ./${{matrix.setup}}
       - name: Build engine
