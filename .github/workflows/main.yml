@@ -124,6 +124,7 @@ jobs:
   #       if: matrix.os != 'windows' && matrix.platform != '32' # Skipping Windows & 32bit builds
 
   build-ios:
+    name: iOS
     strategy:
       matrix:
         config:
@@ -140,7 +141,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup
-        run: ./${{matrix.setup}}
+        run: ./setup.sh
       - name: Build engine
         working-directory: code/build/ios/xcode/orx-ios.xcodeproj
         run: xcodebuild -workspace project.workspace -scheme orxLIB -configuration=${{matrix.config}} -sdk iphone${{matrix.platform}} ${{matrix.extra}}
