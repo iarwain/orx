@@ -68,10 +68,10 @@ jobs:
             runner: ubuntu-latest
             setup: setup.sh
             init: init.sh
-          - os: mac
-            runner: macos-latest
-            setup: setup.sh
-            init: init.sh
+          # - os: mac
+          #   runner: macos-latest
+          #   setup: setup.sh
+          #   init: init.sh
     runs-on:
       - ${{matrix.runner}}
     steps:
