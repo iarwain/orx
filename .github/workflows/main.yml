@@ -219,9 +219,9 @@ jobs:
           cd emsdk
           ./emsdk install latest
           ./emsdk activate latest
-      # - name: Activate Emscripten
-      #   run: source ./emsdk/emsdk_env.sh
-      #   if: ${{matrix.os}} != 'windows'
+      - name: Activate Emscripten
+        run: source ./emsdk/emsdk_env.sh
+        if: ${{matrix.os}} != 'windows'
       - name: Set ORX environment variable
         run: echo ORX=%CD%\code>> %GITHUB_ENV%
         shell: cmd
