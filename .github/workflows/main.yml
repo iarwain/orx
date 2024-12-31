@@ -170,32 +170,25 @@ jobs:
     strategy:
       matrix:
         os:
-          - windows
           - linux
-          # - mac
+          - mac
         config:
           # - debug
           # - profile
           - release
         include:
-          - os: windows
-            runner: windows-latest
-            setup: setup.bat
-            init: init.bat
-            make: mingw32-make
-            activate: ..\..\..\..\emsdk\emsdk_env.bat
           - os: linux
             runner: ubuntu-latest
             setup: setup.sh
             init: init.sh
             make: make
             activate: source ../../../../emsdk/emsdk_env.sh
-          # - os: mac
-          #   runner: macos-latest
-          #   setup: setup.sh
-          #   init: init.sh
-          #   make: make
-          #   activate: source ../../../../emsdk/emsdk_env.sh
+          - os: mac
+            runner: macos-latest
+            setup: setup.sh
+            init: init.sh
+            make: make
+            activate: source ../../../../emsdk/emsdk_env.sh
     runs-on:
       - ${{matrix.runner}}
     steps:
@@ -216,12 +209,14 @@ jobs:
       - name: Build engine
         working-directory: code/build/${{matrix.os}}/gmake
         run: |
+          source ../../../../emsdk/emsdk_env.sh
           ${{matrix.make}} config=release64 CFLAGS=-D__orxHEADLESS__
-          ${{matrix.activate}} && emmake make config=${{matrix.config}}web
+          emmake make config=${{matrix.config}}web
       - name: Create project
         run: ./${{matrix.init}} test
       - name: Build project
         working-directory: test/build/${{matrix.os}}/gmake
         run: |
+          source ../../../../emsdk/emsdk_env.sh
           ${{matrix.make}} config=release64
-          ${{matrix.activate}} && emmake make config=${{matrix.config}}web
+          emmake make config=${{matrix.config}}web
