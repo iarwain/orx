@@ -23,6 +23,10 @@ jobs:
           - x64
 
     steps:
+      - name: List Installed Visual Studio Versions
+        run: |
+          dir "C:\Program Files (x86)\Microsoft Visual Studio"
+          dir "C:\Program Files\Microsoft Visual Studio"
       - name: Map VS year to MSVC version
         shell: bash
         run: |
