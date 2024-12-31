@@ -74,7 +74,6 @@ jobs:
             setup: setup.sh
             init: init.sh
             make: make
-            platform: univ64
     runs-on:
       - ${{matrix.runner}}
     steps:
