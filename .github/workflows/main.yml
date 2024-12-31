@@ -79,7 +79,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Update OS (apt)
-        run: sudo apt-get -qq update
+        run: sudo apt-get -qq update && sudo dpkg --add-architecture i386
         if: matrix.os == 'linux'
       - name: Install OS deps
         run: sudo apt-get -y install freeglut3-dev libxrandr-dev gcc-multilib g++-multilib libx11-dev:i386
