@@ -205,8 +205,6 @@ jobs:
             emsdk_env: emsdk/emsdk_env.sh
     runs-on:
       - ${{matrix.runner}}
-    env:
-      ORX: ${{matrix.os}} == 'windows' && ${{github.workspace}}\code || ${{github.workspace}}/code
     steps:
       - uses: actions/checkout@v4
       - name: Install deps
@@ -214,16 +212,21 @@ jobs:
           sudo apt-get -qq update
           sudo apt-get -y install freeglut3-dev libxrandr-dev
         if: matrix.os == 'linux'
-      # - name: Set ORX environment variable
-      #   run: echo ORX=%CD%\code>> %GITHUB_ENV%
-      #   shell: cmd
-      #   if: matrix.os == 'windows'
       - name: Install Emscripten
         run: |
           git clone https://github.com/emscripten-core/emsdk.git
           cd emsdk
           ./emsdk install latest
           ./emsdk activate latest
+      - name: Set ORX environment variable
+        run: echo ORX=%CD%\code>> %GITHUB_ENV%
+        shell: cmd
+        if: matrix.os == 'windows'
+      - name: Cache extern
+        uses: actions/cache@v4
+        with:
+          path: cache
+          key: orx-extern
       - name: Setup
         run: ./${{matrix.setup}}
       - name: Build engine
