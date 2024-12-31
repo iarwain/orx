@@ -212,6 +212,10 @@ jobs:
           sudo apt-get -qq update
           sudo apt-get -y install freeglut3-dev libxrandr-dev
         if: matrix.os == 'linux'
+      - name: Set ORX environment variable
+        run: echo ORX=%CD%\code>> %GITHUB_ENV%
+        shell: cmd
+        if: matrix.os == 'windows'
       - name: Install Emscripten
         run: |
           git clone https://github.com/emscripten-core/emsdk.git
