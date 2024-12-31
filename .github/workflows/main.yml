@@ -15,10 +15,10 @@ jobs:
           - 2022
         vs-config:
           - Debug
-          # - Profile
-          # - Release
+          - Profile
+          - Release
         vs-platform:
-          - win32
+          - x86
           - x64
 
     runs-on:
@@ -31,5 +31,13 @@ jobs:
           msbuild-architecture: ${{matrix.vs-platform}}
       - name: Setup
         run: ./setup.bat
-      - name: Build
+      - name: Build engine
         run: msbuild code\build\windows\vs${{matrix.vs-version}}\orx.sln -t:rebuild -property:Configuration=${{matrix.vs-config}}
+      - name: Build tutorials
+        run: msbuild tutorial\build\windows\vs${{matrix.vs-version}}\tutorial.sln -t:rebuild -property:Configuration=${{matrix.vs-config}}
+      - name: Set ORX env var
+        run: set ORX=%CD%\code
+      - name: Create project
+        run: ./init.bat test
+      - name: Build project
+        run: msbuild test\build\windows\vs${{matrix.vs-version}}\test.sln -t:rebuild -property:Configuration=${{matrix.vs-config}}
