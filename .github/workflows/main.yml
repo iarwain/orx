@@ -53,9 +53,7 @@ jobs:
           - linux
           - mac
         runner:
-          - windows-latest
-          - ubuntu-latest
-          - macos-latest
+          - test
         config:
           - debug
           # - profile
