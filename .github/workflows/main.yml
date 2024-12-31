@@ -78,8 +78,11 @@ jobs:
       - ${{matrix.runner}}
     steps:
       - uses: actions/checkout@v4
+      - name: Add 32bit support
+        run: sudo dpkg --add-architecture i386
+        if: matrix.os == 'linux'
       - name: Update OS (apt)
-        run: sudo apt-get -qq update && sudo dpkg --add-architecture i386
+        run: sudo apt-get -qq update
         if: matrix.os == 'linux'
       - name: Install OS deps
         run: sudo apt-get -y install freeglut3-dev libxrandr-dev gcc-multilib g++-multilib libx11-dev:i386
