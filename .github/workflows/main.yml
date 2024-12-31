@@ -53,8 +53,8 @@ jobs:
           - mac
         config:
           - debug
-          # - profile
-          # - release
+          - profile
+          - release
         platform:
           - 32
           - 64
@@ -76,6 +76,8 @@ jobs:
             make: make
         exclude:
           - os: windows
+            platform: 32
+          - os: mac
             platform: 32
     runs-on:
       - ${{matrix.runner}}
