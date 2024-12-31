@@ -218,6 +218,7 @@ jobs:
         run: |
           ${{matrix.make}} config=release64 CFLAGS=-D__orxHEADLESS__
           ${{matrix.activate}} && emmake make config=${{matrix.config}}web
+        shell: cmd
       - name: Create project
         run: ./${{matrix.init}} test
       - name: Build project
