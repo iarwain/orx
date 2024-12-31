@@ -93,13 +93,12 @@ jobs:
             platform: 32 # Not supported by GitHub hosted runners
     runs-on:
       - ${{matrix.runner}}
+    uses: iarwain/orx/.github/workflows/setup.yml@web
+    with:
+      os: ${{matrix.os}}
+      setup: ${{matrix.setup}}
     steps:
       - uses: actions/checkout@v4
-      - name: Setup
-        uses: iarwain/orx/.github/workflows/setup.yml@web
-        with:
-          os: ${{matrix.os}}
-          setup: ${{matrix.setup}}
       - name: Build engine
         working-directory: code/build/${{matrix.os}}/gmake
         run: ${{matrix.make}} config=${{matrix.config}}${{matrix.platform}}
