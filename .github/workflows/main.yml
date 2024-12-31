@@ -190,7 +190,7 @@ jobs:
             setup: setup.bat
             init: init.bat
             make: mingw32-make
-            emsdk_env: call ..\..\..\..\emsdk\emsdk_env.bat
+            emsdk_env: . ..\..\..\..\emsdk\emsdk_env.ps1
           # - os: linux
           #   runner: ubuntu-latest
           #   setup: setup.sh
@@ -226,7 +226,6 @@ jobs:
           ${{matrix.emsdk_env}}
           ${{matrix.make}} config=release64 CFLAGS=-D__orxHEADLESS__
           emmake make config=${{matrix.config}}web
-        shell: cmd
       - name: Create project
         run: ./${{matrix.init}} test
       - name: Build project
@@ -235,4 +234,3 @@ jobs:
           ${{matrix.emsdk_env}}
           ${{matrix.make}} config=release64
           emmake make config=${{matrix.config}}web
-        shell: cmd
