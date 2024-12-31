@@ -1,5 +1,7 @@
 name: BuildAll
 on: push
+env:
+  ORX: ${{github.workspace}}/code
 jobs:
   
   # # Visual Studio
@@ -181,7 +183,7 @@ jobs:
     strategy:
       matrix:
         os:
-          - windows
+          # - windows
           - linux
           - mac
         config:
@@ -236,9 +238,7 @@ jobs:
       #   run: ${{matrix.make}} config=release64
       - name: Build engine (web)
         working-directory: code/build/${{matrix.os}}/gmake
-        run: |
-          ${{matrix.activate}}
-          ${{matrix.make}} config=${{matrix.config}}web
+        run: ${{matrix.activate}} && ${{matrix.make}} config=${{matrix.config}}web
       # - name: Create project
       #   run: ./${{matrix.init}} test
       # - name: Build project (native)
