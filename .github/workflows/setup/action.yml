@@ -25,7 +25,6 @@ runs:
       with:
         path: cache
         key: orx-extern
-      shell: bash
     - name: Setup
       run: ./${{inputs.setup}}
       shell: bash || pwsh
