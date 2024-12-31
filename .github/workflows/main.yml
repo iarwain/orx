@@ -21,8 +21,11 @@ jobs:
         platform:
           # - x86 # Not supported by GitHub hosted runners
           - x64
-    runs-on:
-      - windows-${{matrix.version}}
+        include:
+          - os: windows
+            runner: windows-latest
+            setup: setup.bat
+    runs-on: ${{matrix.runner}}
     steps:
       - uses: actions/checkout@v4
       - uses: microsoft/setup-msbuild@v2
@@ -85,8 +88,7 @@ jobs:
             platform: 32 # Not supported by GitHub hosted runners
           - os: mac
             platform: 32 # Not supported by GitHub hosted runners
-    runs-on:
-      - ${{matrix.runner}}
+    runs-on: ${{matrix.runner}}
     steps:
       - uses: actions/checkout@v4
       - name: Setup
@@ -122,6 +124,8 @@ jobs:
     name: iOS
     strategy:
       matrix:
+        os:
+          - mac
         config:
           - Debug
           - Profile
@@ -130,9 +134,12 @@ jobs:
           - os
           - simulator
         include:
+          - os: mac
+            runner: macos-latest
+            setup: setup.sh
           - platform: simulator
             extra: -destination 'platform=iOS Simulator,name=iPhone 15'
-    runs-on: macos-latest
+    runs-on: ${{matrix.runner}}
     steps:
       - uses: actions/checkout@v4
       - name: Setup
@@ -147,7 +154,15 @@ jobs:
   # Android
   build-android:
     name: Android
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os:
+          - linux
+        include:
+          - os: linux
+            runner: ubuntu-latest
+            setup: setup.sh
+    runs-on: ${{matrix.runner}}
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 17
@@ -201,8 +216,7 @@ jobs:
             init: init.sh
             make: make
             emsdk_env: emsdk/emsdk_env.sh
-    runs-on:
-      - ${{matrix.runner}}
+    runs-on: ${{matrix.runner}}
     steps:
       - uses: actions/checkout@v4
       - name: Install Emscripten
