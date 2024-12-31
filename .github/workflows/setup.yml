@@ -11,7 +11,6 @@ on:
 jobs:
   setup:
     steps:
-      - uses: actions/checkout@v4
       - name: Update OS (deps)
         run: |
           sudo dpkg --add-architecture i386
