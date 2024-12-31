@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name: Map VS year to MSVC version
-        id: map_vs
+        shell: bash
         run: |
           if [ "${{ matrix.vs-version }}" == "2017" ]; then
             echo "msvc_version=[15.0, 16.0)" >> $GITHUB_ENV
