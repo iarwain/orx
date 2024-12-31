@@ -85,7 +85,7 @@ jobs:
       - name: Setup
         run: ${{matrix.setup}}
       - name: Build engine
-        working-director: code/build/${{matrix.os}}/gmake
+        working-directory: code/build/${{matrix.os}}/gmake
         run: make config=${{matrix.config}}${{matrix.platform}}
       # - name: Build tutorials
       #   run: msbuild tutorial\build\windows\vs${{matrix.vs-version}}\tutorial.sln -m -t:rebuild -property:Configuration=${{matrix.vs-config}}
