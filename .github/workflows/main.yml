@@ -11,25 +11,34 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        vsversion:
-          # '[15.0, 16.0)'
-          # - '[16.0, 17.0)'
-          - '[17.0, 18.0)'
-        vsconfig:
+        vs-version:
+          - 2019
+          - 2022
+        vs-config:
           - Debug
-          - Profile
+          # - Profile
           # - Release
-        vsplatform:
+        vs-platform:
           - x86
           - x64
 
     steps:
+      - name: Map VS year to MSVC version
+        id: map_vs
+        run: |
+          if [ "${{ matrix.vs-version }}" == "2017" ]; then
+            echo "msvc_version=[15.0, 16.0)" >> $GITHUB_ENV
+          elif [ "${{ matrix.vs-version }}" == "2019" ]; then
+            echo "msvc_version=[16.0, 17.0)" >> $GITHUB_ENV
+          elif [ "${{ matrix.vs-version }}" == "2022" ]; then
+            echo "msvc_version=[17.0, 18.0)" >> $GITHUB_ENV
+          fi
       - uses: actions/checkout@v4
       - uses: microsoft/setup-msbuild@v2
         with:
-          msbuild-architecture: ${{matrix.vsplatform}}
-          vs-version: ${{matrix.vsversion}}
+          msbuild-architecture: ${{matrix.vs-platform}}
+          vs-version: ${{matrix.vs-version}}
       - name: Setup
         run: ./setup.bat
       - name: Build
-        run: msbuild code\build\windows\vs${{matrix.vsversion}}\orx.sln -t:rebuild -property:Configuration=${{matrix.vsconfig}}
+        run: msbuild code\build\windows\vs${{matrix.vs-version}}\orx.sln -t:rebuild -property:Configuration=${{matrix.vs-config}}
