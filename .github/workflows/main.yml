@@ -170,6 +170,7 @@ jobs:
     strategy:
       matrix:
         os:
+          # - windows
           - linux
           - mac
         config:
@@ -177,18 +178,24 @@ jobs:
           # - profile
           - release
         include:
+          # - os: windows
+          #   runner: windows-latest
+          #   setup: setup.bat
+          #   init: init.bat
+          #   make: mingw32-make
+          #   emsdk_emv: emsdk/emsdk_env.bat
           - os: linux
             runner: ubuntu-latest
             setup: setup.sh
             init: init.sh
             make: make
-            activate: source ../../../../emsdk/emsdk_env.sh
+            emsdk_emv: emsdk/emsdk_env.sh
           - os: mac
             runner: macos-latest
             setup: setup.sh
             init: init.sh
             make: make
-            activate: source ../../../../emsdk/emsdk_env.sh
+            emsdk_emv: emsdk/emsdk_env.sh
     runs-on:
       - ${{matrix.runner}}
     steps:
@@ -203,13 +210,13 @@ jobs:
           git clone https://github.com/emscripten-core/emsdk.git
           cd emsdk
           ./emsdk install latest
-          ./emsdk activate latest --permanent
+          ./emsdk activate latest
       - name: Setup
         run: ./${{matrix.setup}}
       - name: Build engine
         working-directory: code/build/${{matrix.os}}/gmake
         run: |
-          source ../../../../emsdk/emsdk_env.sh
+          . ../../../../${{matrix.emsdk_env}}
           ${{matrix.make}} config=release64 CFLAGS=-D__orxHEADLESS__
           emmake make config=${{matrix.config}}web
       - name: Create project
@@ -217,6 +224,6 @@ jobs:
       - name: Build project
         working-directory: test/build/${{matrix.os}}/gmake
         run: |
-          source ../../../../emsdk/emsdk_env.sh
+          . ../../../../${{matrix.emsdk_env}}
           ${{matrix.make}} config=release64
           emmake make config=${{matrix.config}}web
