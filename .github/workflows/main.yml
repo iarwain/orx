@@ -1,11 +1,14 @@
 name: BuildAll
 on: push
 jobs:
+  
+  # # Visual Studio
   # build-vs:
   #   name: Visual Studio
   #   strategy:
   #     matrix:
   #       version:
+  #         # - 2017 # Not supported by GitHub hosted runners
   #         - 2019
   #         - 2022
   #       config:
@@ -42,87 +45,96 @@ jobs:
   #     - name: Build tool - orxFontGen
   #       run: msbuild tools\orxFontGen\build\windows\vs${{matrix.version}}\orxFontGen.sln -m -t:rebuild -property:Configuration=${{matrix.config}}
 
-  # build-gmake:
-  #   name: Make
-  #   strategy:
-  #     matrix:
-  #       os:
-  #         - windows
-  #         - linux
-  #         - mac
-  #       config:
-  #         - debug
-  #         - profile
-  #         - release
-  #       platform:
-  #         - 32
-  #         - 64
-  #       include:
-  #         - os: windows
-  #           runner: windows-latest
-  #           setup: setup.bat
-  #           init: init.bat
-  #           make: mingw32-make
-  #         - os: linux
-  #           runner: ubuntu-latest
-  #           setup: setup.sh
-  #           init: init.sh
-  #           make: make
-  #         - os: mac
-  #           runner: macos-latest
-  #           setup: setup.sh
-  #           init: init.sh
-  #           make: make
-  #       exclude:
-  #         - os: windows
-  #           platform: 32 # Not supported by GitHub hosted runners
-  #         - os: mac
-  #           platform: 32 # Not supported by GitHub hosted runners
-  #   runs-on:
-  #     - ${{matrix.runner}}
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Add 32bit architecture
-  #       run: sudo dpkg --add-architecture i386
-  #       if: matrix.os == 'linux'
-  #     - name: Update OS (apt)
-  #       run: sudo apt-get -qq update
-  #       if: matrix.os == 'linux'
-  #     - name: Install OS deps
-  #       run: sudo apt-get -y install gcc-multilib g++-multilib freeglut3-dev freeglut3-dev:i386 libxrandr-dev libxrandr-dev:i386
-  #       if: matrix.os == 'linux'
-  #     - name: Set ORX environment variable
-  #       run: echo ORX=%CD%\code>> %GITHUB_ENV%
-  #       shell: cmd
-  #       if: matrix.os == 'windows'
-  #     - name: Set ORX environment variable
-  #       run: echo ORX=$PWD/code>> $GITHUB_ENV
-  #       if: matrix.os != 'windows'
-  #     - name: Setup
-  #       run: ./${{matrix.setup}}
-  #     - name: Build engine
-  #       working-directory: code/build/${{matrix.os}}/gmake
-  #       run: ${{matrix.make}} config=${{matrix.config}}${{matrix.platform}}
-  #     - name: Build tutorials
-  #       working-directory: tutorial/build/${{matrix.os}}/gmake
-  #       run: ${{matrix.make}} config=${{matrix.config}}${{matrix.platform}} verbose=1
-  #       if: matrix.os != 'mac' # Skipping MacOS as copying the library returns a value that stops the build
-  #     - name: Create project
-  #       run: ./${{matrix.init}} test
-  #     - name: Build project
-  #       working-directory: test/build/${{matrix.os}}/gmake
-  #       run: ${{matrix.make}} config=${{matrix.config}}${{matrix.platform}}
-  #     - name: Build core
-  #       working-directory: code/build/${{matrix.os}}/gmake
-  #       run: ${{matrix.make}} config=core_${{matrix.config}}${{matrix.platform}}
-  #     - name: Build tool - orxCrypt
-  #       working-directory: tools/orxCrypt/build/${{matrix.os}}/gmake
-  #       run: ${{matrix.make}} config=${{matrix.config}}${{matrix.platform}}
-  #     - name: Build tool - orxFontGen
-  #       working-directory: tools/orxFontGen/build/${{matrix.os}}/gmake
-  #       run: ${{matrix.make}} config=${{matrix.config}}${{matrix.platform}}
-  #       if: matrix.os != 'windows' && matrix.platform != '32' # Skipping Windows & 32bit builds
+  # Make
+  build-gmake:
+    name: Make
+    strategy:
+      matrix:
+        os:
+          - windows
+          - linux
+          - mac
+        config:
+          - debug
+          - profile
+          - release
+        platform:
+          # - 32
+          # - 64
+          - web
+        include:
+          - os: windows
+            runner: windows-latest
+            setup: setup.bat
+            init: init.bat
+            make: mingw32-make
+          - os: linux
+            runner: ubuntu-latest
+            setup: setup.sh
+            init: init.sh
+            make: make
+          - os: mac
+            runner: macos-latest
+            setup: setup.sh
+            init: init.sh
+            make: make
+        exclude:
+          - os: windows
+            platform: 32 # Not supported by GitHub hosted runners
+          - os: mac
+            platform: 32 # Not supported by GitHub hosted runners
+    runs-on:
+      - ${{matrix.runner}}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add 32bit architecture
+        run: sudo dpkg --add-architecture i386
+        if: matrix.os == 'linux'
+      - name: Update OS (apt)
+        run: sudo apt-get -qq update
+        if: matrix.os == 'linux'
+      - name: Install OS deps
+        run: sudo apt-get -y install gcc-multilib g++-multilib freeglut3-dev freeglut3-dev:i386 libxrandr-dev libxrandr-dev:i386
+        if: matrix.os == 'linux'
+      - name: Set ORX environment variable
+        run: echo ORX=%CD%\code>> %GITHUB_ENV%
+        shell: cmd
+        if: matrix.os == 'windows'
+      - name: Set ORX environment variable
+        run: echo ORX=$PWD/code>> $GITHUB_ENV
+        if: matrix.os != 'windows'
+      - name: Setup
+        run: ./${{matrix.setup}}
+      - name: Build engine
+        working-directory: code/build/${{matrix.os}}/gmake
+        run: ${{matrix.make}} config=${{matrix.config}}${{matrix.platform}}
+      - name: Build tutorials
+        working-directory: tutorial/build/${{matrix.os}}/gmake
+        run: ${{matrix.make}} config=${{matrix.config}}${{matrix.platform}} verbose=1
+        if: matrix.os != 'mac' && matrix.platform != 'web' # Skipping MacOS as copying the library returns a value that stops the build
+      - name: Create project
+        run: ./${{matrix.init}} test
+      - name: Build project (Bundle)
+        working-directory: test/build/${{matrix.os}}/gmake
+        run: ${{matrix.make}} config=release64
+        if: matrix.platform == 'web' # Only when building for Web platform
+      - name: Build project
+        working-directory: test/build/${{matrix.os}}/gmake
+        run: ${{matrix.make}} config=${{matrix.config}}${{matrix.platform}}
+      - name: Build core
+        working-directory: code/build/${{matrix.os}}/gmake
+        run: ${{matrix.make}} config=core_${{matrix.config}}${{matrix.platform}}
+        if: matrix.platform != 'web' # Skipping for Web platform
+      - name: Build tool - orxCrypt
+        working-directory: tools/orxCrypt/build/${{matrix.os}}/gmake
+        run: ${{matrix.make}} config=${{matrix.config}}${{matrix.platform}}
+        if: matrix.platform != 'web' # Skipping for Web platform
+      - name: Build tool - orxFontGen
+        working-directory: tools/orxFontGen/build/${{matrix.os}}/gmake
+        run: ${{matrix.make}} config=${{matrix.config}}${{matrix.platform}}
+        if: matrix.os != 'windows' && matrix.platform == '64' # Skipping Windows & non-64bit builds
 
+  # # iOS
   # build-ios:
   #   name: iOS
   #   strategy:
@@ -146,25 +158,26 @@ jobs:
   #       working-directory: code/build/ios/xcode/orx-ios.xcodeproj
   #       run: xcodebuild -workspace project.xcworkspace -scheme orxLIB -configuration=${{matrix.config}} -sdk iphone${{matrix.platform}} ${{matrix.extra}}
 
-  build-android:
-    name: Android
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-      - name: Set ORX environment variable
-        run: echo ORX=$PWD/code>> $GITHUB_ENV
-      - name: Setup
-        run: ./setup.sh
-      - name: Build engine
-        working-directory: code/build/android
-        run: ./gradlew clean assemble publishAllPublicationsToOrxRepository
-      - name: Build demo
-        working-directory: code/demo/android
-        run: ./gradlew clean assemble
+  # # Android
+  # build-android:
+  #   name: Android
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Set up JDK 17
+  #       uses: actions/setup-java@v3
+  #       with:
+  #         java-version: '17'
+  #         distribution: 'temurin'
+  #     - name: Set up Android SDK
+  #       uses: android-actions/setup-android@v3
+  #     - name: Set ORX environment variable
+  #       run: echo ORX=$PWD/code>> $GITHUB_ENV
+  #     - name: Setup
+  #       run: ./setup.sh
+  #     - name: Build engine
+  #       working-directory: code/build/android
+  #       run: ./gradlew clean assemble publishAllPublicationsToOrxRepository
+  #     - name: Build demo
+  #       working-directory: code/demo/android
+  #       run: ./gradlew clean assemble
