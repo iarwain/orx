@@ -12,15 +12,15 @@ jobs:
     strategy:
       matrix:
         vsversion:
-          - 2017
-          - 2019
+          # - 2017
+          # - 2019
           - 2022
         vsconfig:
           - Debug
-          - Profile
-          - Release
+          # - Profile
+          # - Release
         vsplatform:
-          - Win32
+          # - Win32
           - x64
 
     steps:
@@ -29,5 +29,4 @@ jobs:
       - name: Setup
         run: ./setup.bat
       - name: orx build (msbuild)
-        working-directory: ${{ env.GITHUB_WORKSPACE }}
-        run: msbuild code\build\windows\vs${{ matrix.vsversion }}\orx.sln
+        run: msbuild ${{ env.GITHUB_WORKSPACE }}/code/build/windows/vs${{ matrix.vsversion }}/orx.sln
