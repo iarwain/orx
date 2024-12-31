@@ -1,47 +1,46 @@
 name: BuildAll
 on: push
 jobs:
-  # build-vs:
-  #   name: Visual Studio
-  #   strategy:
-  #     matrix:
-  #       version:
-  #         # - 2017
-  #         - 2019
-  #         - 2022
-  #       config:
-  #         - Debug
-  #         - Profile
-  #         - Release
-  #       platform:
-  #         # - x86
-  #         - x64
-  #   runs-on:
-  #     - windows-${{matrix.version}}
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: microsoft/setup-msbuild@v2
-  #       with:
-  #         msbuild-architecture: ${{matrix.platform}}
-  #     - name: Set ORX environment variable
-  #       run: echo ORX=%CD%\code>> %GITHUB_ENV%
-  #       shell: cmd
-  #     - name: Setup
-  #       run: ./setup.bat
-  #     - name: Build engine
-  #       run: msbuild code\build\windows\vs${{matrix.version}}\orx.sln -m -t:rebuild -property:Configuration=${{matrix.config}}
-  #     - name: Build tutorials
-  #       run: msbuild tutorial\build\windows\vs${{matrix.version}}\tutorial.sln -m -t:rebuild -property:Configuration=${{matrix.config}}
-  #     - name: Create project
-  #       run: ./init.bat test
-  #     - name: Build project
-  #       run: msbuild test\build\windows\vs${{matrix.version}}\test.sln -m -t:rebuild -property:Configuration=${{matrix.config}}
-  #     - name: Build core
-  #       run: msbuild code\build\windows\vs${{matrix.version}}\orx.sln -m -t:rebuild "-property:Configuration=Core ${{matrix.config}}"
-  #     - name: Build tool - orxCrypt
-  #       run: msbuild tools\orxCrypt\build\windows\vs${{matrix.version}}\orxCrypt.sln -m -t:rebuild -property:Configuration=${{matrix.config}}
-  #     - name: Build tool - orxFontGen
-  #       run: msbuild tools\orxFontGen\build\windows\vs${{matrix.version}}\orxFontGen.sln -m -t:rebuild -property:Configuration=${{matrix.config}}
+  build-vs:
+    name: Visual Studio
+    strategy:
+      matrix:
+        version:
+          - 2019
+          - 2022
+        config:
+          - Debug
+          - Profile
+          - Release
+        platform:
+          # - x86 # Not supported by GitHub hosted runners
+          - x64
+    runs-on:
+      - windows-${{matrix.version}}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: microsoft/setup-msbuild@v2
+        with:
+          msbuild-architecture: ${{matrix.platform}}
+      - name: Set ORX environment variable
+        run: echo ORX=%CD%\code>> %GITHUB_ENV%
+        shell: cmd
+      - name: Setup
+        run: ./setup.bat
+      - name: Build engine
+        run: msbuild code\build\windows\vs${{matrix.version}}\orx.sln -m -t:rebuild -property:Configuration=${{matrix.config}}
+      - name: Build tutorials
+        run: msbuild tutorial\build\windows\vs${{matrix.version}}\tutorial.sln -m -t:rebuild -property:Configuration=${{matrix.config}}
+      - name: Create project
+        run: ./init.bat test
+      - name: Build project
+        run: msbuild test\build\windows\vs${{matrix.version}}\test.sln -m -t:rebuild -property:Configuration=${{matrix.config}}
+      - name: Build core
+        run: msbuild code\build\windows\vs${{matrix.version}}\orx.sln -m -t:rebuild "-property:Configuration=Core ${{matrix.config}}"
+      - name: Build tool - orxCrypt
+        run: msbuild tools\orxCrypt\build\windows\vs${{matrix.version}}\orxCrypt.sln -m -t:rebuild -property:Configuration=${{matrix.config}}
+      - name: Build tool - orxFontGen
+        run: msbuild tools\orxFontGen\build\windows\vs${{matrix.version}}\orxFontGen.sln -m -t:rebuild -property:Configuration=${{matrix.config}}
 
   build-gmake:
     name: Make
@@ -76,9 +75,9 @@ jobs:
             make: make
         exclude:
           - os: windows
-            platform: 32
+            platform: 32 # Not supported by GitHub hosted runners
           - os: mac
-            platform: 32
+            platform: 32 # Not supported by GitHub hosted runners
     runs-on:
       - ${{matrix.runner}}
     steps:
@@ -107,6 +106,7 @@ jobs:
       - name: Build tutorials
         working-directory: tutorial/build/${{matrix.os}}/gmake
         run: ${{matrix.make}} config=${{matrix.config}}${{matrix.platform}} verbose=1
+        # Skipping MacOS as copying the library returns a value that stops the build
         if: matrix.os != 'mac'
       - name: Create project
         run: ./${{matrix.init}} test
@@ -122,4 +122,5 @@ jobs:
       - name: Build tool - orxFontGen
         working-directory: tools/orxFontGen/build/${{matrix.os}}/gmake
         run: ${{matrix.make}} config=${{matrix.config}}${{matrix.platform}}
-        if: matrix.os != 'windows' && matrix.platform == '64'
+        # Skipping Windows & 32bit builds
+        if: matrix.os != 'windows' && matrix.platform != '32'
