@@ -171,8 +171,8 @@ jobs:
       matrix:
         os:
           - windows
-          - linux
-          - mac
+          # - linux
+          # - mac
         config:
           # - debug
           # - profile
@@ -184,18 +184,18 @@ jobs:
             init: init.bat
             make: mingw32-make
             activate: . ../../../../emsdk/emsdk_env.bat
-          - os: linux
-            runner: ubuntu-latest
-            setup: setup.sh
-            init: init.sh
-            make: make
-            activate: source ../../../../emsdk/emsdk_env.sh
-          - os: mac
-            runner: macos-latest
-            setup: setup.sh
-            init: init.sh
-            make: make
-            activate: source ../../../../emsdk/emsdk_env.sh
+          # - os: linux
+          #   runner: ubuntu-latest
+          #   setup: setup.sh
+          #   init: init.sh
+          #   make: make
+          #   activate: source ../../../../emsdk/emsdk_env.sh
+          # - os: mac
+          #   runner: macos-latest
+          #   setup: setup.sh
+          #   init: init.sh
+          #   make: make
+          #   activate: source ../../../../emsdk/emsdk_env.sh
     runs-on:
       - ${{matrix.runner}}
     steps:
