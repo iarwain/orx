@@ -18,28 +18,17 @@ jobs:
           # - Profile
           # - Release
         vs-platform:
-          - x86
+          - win32
           - x64
 
     runs-on:
       - windows-${{matrix.vs-version}}
 
     steps:
-      - name: Map VS year to MSVC version
-        shell: bash
-        run: |
-          if [ "${{ matrix.vs-version }}" == "2017" ]; then
-            echo "cl-version=[15.0, 16.0)" >> $GITHUB_ENV
-          elif [ "${{ matrix.vs-version }}" == "2019" ]; then
-            echo "cl-version=[16.0, 17.0)" >> $GITHUB_ENV
-          elif [ "${{ matrix.vs-version }}" == "2022" ]; then
-            echo "cl-version=[17.0, 18.0)" >> $GITHUB_ENV
-          fi
       - uses: actions/checkout@v4
       - uses: microsoft/setup-msbuild@v2
         with:
           msbuild-architecture: ${{matrix.vs-platform}}
-          vs-version: ${{env.cl-version}}
       - name: Setup
         run: ./setup.bat
       - name: Build
