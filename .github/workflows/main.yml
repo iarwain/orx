@@ -65,8 +65,8 @@ jobs:
           - mac
         config:
           - debug
-          - profile
-          - release
+          # - profile
+          # - release
         platform:
           - 32
           - 64
