@@ -20,29 +20,26 @@ jobs:
         vs-platform:
           - x86
           - x64
+
     runs-on:
       - windows-${{matrix.vs-version}}
 
     steps:
-      - name: List Installed Visual Studio Versions
-        run: |
-          dir "C:\Program Files (x86)\Microsoft Visual Studio"
-          dir "C:\Program Files\Microsoft Visual Studio"
       - name: Map VS year to MSVC version
         shell: bash
         run: |
           if [ "${{ matrix.vs-version }}" == "2017" ]; then
-            echo "msvc_version=[15.0, 16.0)" >> $GITHUB_ENV
+            echo "cl-version=[15.0, 16.0)" >> $GITHUB_ENV
           elif [ "${{ matrix.vs-version }}" == "2019" ]; then
-            echo "msvc_version=[16.0, 17.0)" >> $GITHUB_ENV
+            echo "cl-version=[16.0, 17.0)" >> $GITHUB_ENV
           elif [ "${{ matrix.vs-version }}" == "2022" ]; then
-            echo "msvc_version=[17.0, 18.0)" >> $GITHUB_ENV
+            echo "cl-version=[17.0, 18.0)" >> $GITHUB_ENV
           fi
       - uses: actions/checkout@v4
       - uses: microsoft/setup-msbuild@v2
         with:
           msbuild-architecture: ${{matrix.vs-platform}}
-          vs-version: ${{env.msvc_version}}
+          vs-version: ${{env.cl-version}}
       - name: Setup
         run: ./setup.bat
       - name: Build
