@@ -28,5 +28,5 @@ jobs:
       - uses: microsoft/setup-msbuild@v2
       - name: Setup
         run: ./setup.bat
-      - name: orx build (msbuild)
-        run: msbuild ${{ env.GITHUB_WORKSPACE }}/code/build/windows/vs${{ matrix.vsversion }}/orx.sln
+      - name: Build {{ matrix.vsversion }} / {{ matrix.vsconfig }} / {{ matrix.vsplatform }}
+        run: msbuild code\build\windows\vs${{ matrix.vsversion }}\orx.sln -t:rebuild -verbosity:diag
