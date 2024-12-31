@@ -56,20 +56,19 @@ jobs:
           # - profile
           # - release
         platform:
-          - 32
           - 64
         include:
           - os: windows
             runner: windows-latest
             setup: setup.bat
             init: init.bat
-            platform: "64"
             make: mingw32-make
           - os: linux
             runner: ubuntu-latest
             setup: setup.sh
             init: init.sh
             make: make
+            platform: [32, 64]
           # - os: mac
           #   runner: macos-latest
           #   setup: setup.sh
