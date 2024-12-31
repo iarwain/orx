@@ -8,7 +8,6 @@ on: push
 jobs:
   # Visual Studio build - Windows only
   build-vs:
-    runs-on: windows-latest
     strategy:
       matrix:
         vs-version:
@@ -21,6 +20,8 @@ jobs:
         vs-platform:
           - x86
           - x64
+    runs-on:
+      - windows-${{matrix.vs-version}}
 
     steps:
       - name: List Installed Visual Studio Versions
