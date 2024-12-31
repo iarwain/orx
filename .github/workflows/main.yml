@@ -112,3 +112,4 @@ jobs:
       - name: Build tool - orxFontGen
         working-directory: tools/orxFontGen/build/${{matrix.os}}/gmake
         run: ${{matrix.make}} config=${{matrix.config}}${{matrix.platform}}
+        if: matrix.os != 'windows'
