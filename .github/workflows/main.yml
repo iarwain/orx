@@ -183,7 +183,7 @@ jobs:
     strategy:
       matrix:
         os:
-          # - windows
+          - windows
           - linux
           - mac
         config:
@@ -191,12 +191,12 @@ jobs:
           # - profile
           - release
         include:
-          # - os: windows
-          #   runner: windows-latest
-          #   setup: setup.bat
-          #   init: init.bat
-          #   make: mingw32-make
-          #   activate: ../../../../emsdk/emsdk_env.bat
+          - os: windows
+            runner: windows-latest
+            setup: setup.bat
+            init: init.bat
+            make: mingw32-make
+            activate: ../../../../emsdk/emsdk_env.bat
           - os: linux
             runner: ubuntu-latest
             setup: setup.sh
@@ -226,17 +226,15 @@ jobs:
           ./emsdk activate latest
       - name: Setup
         run: ./${{matrix.setup}}
-      - name: Build engine (native)
+      - name: Build engine
         working-directory: code/build/${{matrix.os}}/gmake
-        run: ${{matrix.make}} config=release64
-      - name: Build engine (web)
-        working-directory: code/build/${{matrix.os}}/gmake
-        run: ${{matrix.activate}} && ${{matrix.make}} config=${{matrix.config}}web
+        run: |
+          ${{matrix.make}} config=release64
+          ${{matrix.activate}} && ${{matrix.make}} config=${{matrix.config}}web
       - name: Create project
         run: ./${{matrix.init}} test
-      - name: Build project (native)
+      - name: Build project
         working-directory: test/build/${{matrix.os}}/gmake
-        run: ${{matrix.make}} config=release64
-      - name: Build project (web)
-        working-directory: test/build/${{matrix.os}}/gmake
-        run: ${{matrix.make}} config=${{matrix.config}}web
+        run: |
+          ${{matrix.make}} config=release64
+          ${{matrix.activate}} && ${{matrix.make}} config=${{matrix.config}}web
