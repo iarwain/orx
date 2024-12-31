@@ -30,7 +30,8 @@ jobs:
         with:
           msbuild-architecture: ${{matrix.vs-platform}}
       - name: Set ORX environment variable
-        run: echo ORX=$PWD\code>> $GITHUB_ENV
+        run: echo ORX=%CD%\code>> %GITHUB_ENV%
+        shell: cmd
       - name: Setup
         run: ./setup.bat
       - name: Build engine
