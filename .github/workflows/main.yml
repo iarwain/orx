@@ -23,6 +23,10 @@ jobs:
 
     runs-on:
       - windows-${{matrix.vs-version}}
+      
+    defaults:
+      run:
+        shell: cmd
 
     steps:
       - uses: actions/checkout@v4
@@ -30,14 +34,12 @@ jobs:
         with:
           msbuild-architecture: ${{matrix.vs-platform}}
       - name: Setup
-        run: ./setup.bat
+        run: setup.bat
       - name: Build engine
         run: msbuild code\build\windows\vs${{matrix.vs-version}}\orx.sln -m -t:rebuild -property:Configuration=${{matrix.vs-config}}
       # - name: Build tutorials
       #   run: msbuild tutorial\build\windows\vs${{matrix.vs-version}}\tutorial.sln -t:rebuild -property:Configuration=${{matrix.vs-config}}
       - name: Create project
-        run: echo %CD%\code && set ORX=%CD%\code && ./init.bat test
-        shell: cmd
+        run: echo %CD%\code && set ORX=%CD%\code && init.bat test
       - name: Build project
         run: echo %CD%\code && set ORX=%CD%\code && msbuild test\build\windows\vs${{matrix.vs-version}}\test.sln -m -t:rebuild -property:Configuration=${{matrix.vs-config}}
-        shell: cmd
