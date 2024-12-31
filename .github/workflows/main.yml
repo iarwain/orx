@@ -50,7 +50,7 @@ jobs:
         os:
           - windows
           - linux
-          # - mac
+          - mac
         config:
           - debug
           # - profile
@@ -69,11 +69,11 @@ jobs:
             setup: setup.sh
             init: init.sh
             make: make
-          # - os: mac
-          #   runner: macos-latest
-          #   setup: setup.sh
-          #   init: init.sh
-          #   make: make
+          - os: mac
+            runner: macos-latest
+            setup: setup.sh
+            init: init.sh
+            make: make
         exclude:
           - os: windows
             platform: 32
