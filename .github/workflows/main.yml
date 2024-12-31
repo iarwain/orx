@@ -63,19 +63,13 @@ jobs:
         platform:
           # - 32
           - 64
-        exclude:
+        include:
           - os: windows
-            runner: ubuntu-latest
-          - os: windows
-            runner: macos-latest
-          - os: linux
             runner: windows-latest
           - os: linux
-            runner: macos-latest
-          - os: mac
-            runner: windows-latest
-          - os: mac
             runner: ubuntu-latest
+          - os: mac
+            runner: macos-latest
     runs-on:
       - ${{matrix.runner}}
     steps:
