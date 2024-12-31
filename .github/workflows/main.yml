@@ -37,7 +37,7 @@ jobs:
       - uses: microsoft/setup-msbuild@v2
         with:
           msbuild-architecture: ${{matrix.vs-platform}}
-          vs-version: ${{matrix.vs-version}}
+          vs-version: ${{env.msvc_version}}
       - name: Setup
         run: ./setup.bat
       - name: Build
