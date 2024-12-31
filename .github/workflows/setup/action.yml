@@ -1,13 +1,12 @@
 name: Setup
-on:
-  workflow_call:
-    inputs:
-      os:
-        required: true
-        type: string
-      setup:
-        required: true
-        type: string
+inputs:
+  os:
+    required: true
+    type: string
+  setup:
+    required: true
+    type: string
+outputs:
 runs:
   using: 'composite'
   steps:
