@@ -74,6 +74,7 @@ jobs:
             setup: setup.sh
             init: init.sh
             make: make
+            platform: univ64
     runs-on:
       - ${{matrix.runner}}
     steps:
@@ -96,9 +97,10 @@ jobs:
       - name: Build engine
         working-directory: code/build/${{matrix.os}}/gmake
         run: ${{matrix.make}} config=${{matrix.config}}${{matrix.platform}}
-      # - name: Build tutorials
-      #   working-directory: tutorial/build/${{matrix.os}}/gmake
-      #   run: ${{matrix.make}} config=${{matrix.config}}${{matrix.platform}} verbose=1
+      - name: Build tutorials
+        working-directory: tutorial/build/${{matrix.os}}/gmake
+        run: ${{matrix.make}} config=${{matrix.config}}${{matrix.platform}} verbose=1
+        if: matrix.os != 'mac'
       - name: Create project
         run: ./${{matrix.init}} test
       - name: Build project
