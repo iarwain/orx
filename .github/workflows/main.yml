@@ -33,6 +33,10 @@ jobs:
       - uses: microsoft/setup-msbuild@v2
         with:
           msbuild-architecture: ${{matrix.vs-platform}}
+      - name: Set environment variable
+        run: echo ORX=%CD%\code>> %GITHUB_ENV%
+      - name: list
+        run: set
       # - name: Setup
       #   run: setup.bat
       # - name: Build engine
