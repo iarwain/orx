@@ -53,7 +53,9 @@ jobs:
           - linux
           - mac
         runner:
-          - test
+          - windows-latest
+          - ubuntu-latest
+          - macos-latest
         config:
           - debug
           # - profile
@@ -61,16 +63,19 @@ jobs:
         platform:
           # - 32
           - 64
-        setup:
-          - ./setup.sh
-        include:
+        exclude:
           - os: windows
-            runner: windows-latest
-            setup: ./setup.bat
-          - os: linux
             runner: ubuntu-latest
-          - os: mac
+          - os: windows
             runner: macos-latest
+          - os: linux
+            runner: windows-latest
+          - os: linux
+            runner: macos-latest
+          - os: mac
+            runner: windows-latest
+          - os: mac
+            runner: ubuntu-latest
     runs-on:
       - ${{matrix.runner}}
     steps:
@@ -89,7 +94,11 @@ jobs:
         run: echo ORX=$PWD/code>> $GITHUB_ENV
         if: matrix.os != 'windows'
       - name: Setup
-        run: ${{matrix.setup}}
+        run: ./setup.bat
+        if: matrix.os == 'windows'
+      - name: Setup
+        run: ./setup.sh
+        if: matrix.os != 'windows'
       - name: Build engine
         working-directory: code/build/${{matrix.os}}/gmake
         run: make config=${{matrix.config}}${{matrix.platform}}
