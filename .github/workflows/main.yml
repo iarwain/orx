@@ -94,7 +94,6 @@ jobs:
     runs-on:
       - ${{matrix.runner}}
     steps:
-      - uses: actions/checkout@v4
       - name: Setup
         uses: ./.github/workflows/setup
         with:
