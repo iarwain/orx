@@ -144,4 +144,4 @@ jobs:
         run: ./setup.sh
       - name: Build engine
         working-directory: code/build/ios/xcode/orx-ios.xcodeproj
-        run: xcodebuild -workspace project.workspace -scheme orxLIB -configuration=${{matrix.config}} -sdk iphone${{matrix.platform}} ${{matrix.extra}}
+        run: xcodebuild -workspace project.xcworkspace -scheme orxLIB -configuration=${{matrix.config}} -sdk iphone${{matrix.platform}} ${{matrix.extra}}
