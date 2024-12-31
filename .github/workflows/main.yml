@@ -40,7 +40,7 @@ jobs:
       - name: Create project
         run: ./init.bat test
       - name: List env
-        run: Get-ChildItem Env:
-        shell: pwsh
+        run: set
+        shell: cmd
       - name: Build project
         run: msbuild test\build\windows\vs${{matrix.vs-version}}\test.sln -m -t:rebuild -property:Configuration=${{matrix.vs-config}} -verbosity:diag
