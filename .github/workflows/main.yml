@@ -85,7 +85,7 @@ jobs:
         run: sudo apt-get -qq update
         if: matrix.os == 'linux'
       - name: Install OS deps
-        run: sudo apt-get -y install freeglut3-dev libxrandr-dev gcc-multilib g++-multilib libx11-dev:i386
+        run: sudo apt-get -y install gcc-multilib g++-multilib freeglut3-dev freeglut3-dev:i386 libxrandr-dev libxrandr-dev:i386 libx11-dev:i386 libc6:i386 libstdc++:i386
         if: matrix.os == 'linux'
       - name: Set ORX environment variable
         run: echo ORX=%CD%\code>> %GITHUB_ENV%
