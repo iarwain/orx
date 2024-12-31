@@ -171,7 +171,7 @@ jobs:
       matrix:
         os:
           - windows
-          # - linux
+          - linux
           # - mac
         config:
           # - debug
@@ -183,13 +183,13 @@ jobs:
             setup: setup.bat
             init: init.bat
             make: mingw32-make
-            activate: . ../../../../emsdk/emsdk_env.bat
-          # - os: linux
-          #   runner: ubuntu-latest
-          #   setup: setup.sh
-          #   init: init.sh
-          #   make: make
-          #   activate: source ../../../../emsdk/emsdk_env.sh
+            activate: ..\..\..\..\emsdk\emsdk_env.bat
+          - os: linux
+            runner: ubuntu-latest
+            setup: setup.sh
+            init: init.sh
+            make: make
+            activate: source ../../../../emsdk/emsdk_env.sh
           # - os: mac
           #   runner: macos-latest
           #   setup: setup.sh
@@ -210,7 +210,7 @@ jobs:
           git clone https://github.com/emscripten-core/emsdk.git
           cd emsdk
           ./emsdk install latest
-          ./emsdk activate latest
+          ./emsdk activate latest --permanent
       - name: Setup
         run: ./${{matrix.setup}}
       - name: Build engine
