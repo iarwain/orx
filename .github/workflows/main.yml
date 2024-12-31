@@ -136,7 +136,7 @@ jobs:
           - simulator
         include:
           - platform: simulator
-            extra: -destination 'platform=iOS Simulator,name=iPad Air'
+            extra: -destination 'platform=iOS Simulator,name=iPhone 15'
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
