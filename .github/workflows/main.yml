@@ -177,9 +177,9 @@ jobs:
     strategy:
       matrix:
         os:
-          - windows # Skipping Windows as Emscripten isn't found after installation/activation
-          # - linux
-          # - mac
+          - windows
+          - linux
+          - mac
         config:
           # - debug
           # - profile
@@ -190,19 +190,19 @@ jobs:
             setup: setup.bat
             init: init.bat
             make: mingw32-make
-            emsdk_env: . ..\..\..\..\emsdk\emsdk_env.ps1
-          # - os: linux
-          #   runner: ubuntu-latest
-          #   setup: setup.sh
-          #   init: init.sh
-          #   make: make
-          #   emsdk_env: emsdk/emsdk_env.sh
-          # - os: mac
-          #   runner: macos-latest
-          #   setup: setup.sh
-          #   init: init.sh
-          #   make: make
-          #   emsdk_env: emsdk/emsdk_env.sh
+            emsdk_env: emsdk/emsdk_env.ps1
+          - os: linux
+            runner: ubuntu-latest
+            setup: setup.sh
+            init: init.sh
+            make: make
+            emsdk_env: emsdk/emsdk_env.sh
+          - os: mac
+            runner: macos-latest
+            setup: setup.sh
+            init: init.sh
+            make: make
+            emsdk_env: emsdk/emsdk_env.sh
     runs-on:
       - ${{matrix.runner}}
     steps:
@@ -223,7 +223,7 @@ jobs:
       - name: Build engine
         working-directory: code/build/${{matrix.os}}/gmake
         run: |
-          ${{matrix.emsdk_env}}
+          . ../../../../${{matrix.emsdk_env}}
           ${{matrix.make}} config=release64 CFLAGS=-D__orxHEADLESS__
           emmake make config=${{matrix.config}}web
       - name: Create project
@@ -231,6 +231,6 @@ jobs:
       - name: Build project
         working-directory: test/build/${{matrix.os}}/gmake
         run: |
-          ${{matrix.emsdk_env}}
+          . ../../../../${{matrix.emsdk_env}}
           ${{matrix.make}} config=release64
           emmake make config=${{matrix.config}}web
