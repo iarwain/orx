@@ -1,48 +1,47 @@
 name: BuildAll
 on: push
 jobs:
-  # Visual Studio - Windows only
-  # build-vs:
-  #   name: Visual Studio
-  #   strategy:
-  #     matrix:
-  #       version:
-  #         # - 2017
-  #         - 2019
-  #         - 2022
-  #       config:
-  #         - Debug
-  #         - Profile
-  #         - Release
-  #       platform:
-  #         # - x86
-  #         - x64
-  #   runs-on:
-  #     - windows-${{matrix.version}}
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: microsoft/setup-msbuild@v2
-  #       with:
-  #         msbuild-architecture: ${{matrix.platform}}
-  #     - name: Set ORX environment variable
-  #       run: echo ORX=%CD%\code>> %GITHUB_ENV%
-  #       shell: cmd
-  #     - name: Setup
-  #       run: ./setup.bat
-  #     - name: Build engine
-  #       run: msbuild code\build\windows\vs${{matrix.version}}\orx.sln -m -t:rebuild -property:Configuration=${{matrix.config}}
-  #     - name: Build tutorials
-  #       run: msbuild tutorial\build\windows\vs${{matrix.version}}\tutorial.sln -m -t:rebuild -property:Configuration=${{matrix.config}}
-  #     - name: Create project
-  #       run: ./init.bat test
-  #     - name: Build project
-  #       run: msbuild test\build\windows\vs${{matrix.version}}\test.sln -m -t:rebuild -property:Configuration=${{matrix.config}}
-  #     - name: Build core
-  #       run: msbuild code\build\windows\vs${{matrix.version}}\orx.sln -m -t:rebuild "-property:Configuration=Core ${{matrix.config}}"
-  #     - name: Build tool - orxCrypt
-  #       run: msbuild tools\orxCrypt\build\windows\vs${{matrix.version}}\orxCrypt.sln -m -t:rebuild -property:Configuration=${{matrix.config}}
-  #     - name: Build tool - orxFontGen
-  #       run: msbuild tools\orxFontGen\build\windows\vs${{matrix.version}}\orxFontGen.sln -m -t:rebuild -property:Configuration=${{matrix.config}}
+  build-vs:
+    name: Visual Studio
+    strategy:
+      matrix:
+        version:
+          # - 2017
+          - 2019
+          - 2022
+        config:
+          - Debug
+          - Profile
+          - Release
+        platform:
+          # - x86
+          - x64
+    runs-on:
+      - windows-${{matrix.version}}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: microsoft/setup-msbuild@v2
+        with:
+          msbuild-architecture: ${{matrix.platform}}
+      - name: Set ORX environment variable
+        run: echo ORX=%CD%\code>> %GITHUB_ENV%
+        shell: cmd
+      - name: Setup
+        run: ./setup.bat
+      - name: Build engine
+        run: msbuild code\build\windows\vs${{matrix.version}}\orx.sln -m -t:rebuild -property:Configuration=${{matrix.config}}
+      - name: Build tutorials
+        run: msbuild tutorial\build\windows\vs${{matrix.version}}\tutorial.sln -m -t:rebuild -property:Configuration=${{matrix.config}}
+      - name: Create project
+        run: ./init.bat test
+      - name: Build project
+        run: msbuild test\build\windows\vs${{matrix.version}}\test.sln -m -t:rebuild -property:Configuration=${{matrix.config}}
+      - name: Build core
+        run: msbuild code\build\windows\vs${{matrix.version}}\orx.sln -m -t:rebuild "-property:Configuration=Core ${{matrix.config}}"
+      - name: Build tool - orxCrypt
+        run: msbuild tools\orxCrypt\build\windows\vs${{matrix.version}}\orxCrypt.sln -m -t:rebuild -property:Configuration=${{matrix.config}}
+      - name: Build tool - orxFontGen
+        run: msbuild tools\orxFontGen\build\windows\vs${{matrix.version}}\orxFontGen.sln -m -t:rebuild -property:Configuration=${{matrix.config}}
 
   build-gmake:
     name: Make
