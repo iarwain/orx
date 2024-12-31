@@ -13,14 +13,14 @@ jobs:
       matrix:
         vsversion:
           # - 2017
-          # - 2019
+          - 2019
           - 2022
         vsconfig:
           - Debug
           # - Profile
           # - Release
         vsplatform:
-          # - Win32
+          - Win32
           - x64
 
     steps:
