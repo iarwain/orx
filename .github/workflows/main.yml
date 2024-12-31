@@ -63,7 +63,7 @@ jobs:
             runner: windows-latest
             setup: setup.bat
             init: init.bat
-            platform: 64
+            platform: "64"
             make: mingw32-make
           - os: linux
             runner: ubuntu-latest
