@@ -1,23 +1,18 @@
-# This is a basic workflow to help you get started with Actions
-
 name: BuildAll
-
-# Controls when the workflow will run
 on: push
-
 jobs:
-  # Visual Studio build - Windows only
+  # Visual Studio - Windows only
   build-vs:
     strategy:
       matrix:
         vs-version:
           # - 2017
-          - 2019
+          # - 2019
           - 2022
         vs-config:
           - Debug
-          - Profile
-          - Release
+          # - Profile
+          # - Release
         vs-platform:
           # - x86
           - x64
@@ -25,9 +20,9 @@ jobs:
     runs-on:
       - windows-${{matrix.vs-version}}
       
-    defaults:
-      run:
-        shell: cmd
+    # defaults:
+    #   run:
+    #     shell: cmd
 
     steps:
       - uses: actions/checkout@v4
@@ -35,15 +30,15 @@ jobs:
         with:
           msbuild-architecture: ${{matrix.vs-platform}}
       - name: Set ORX environment variable
-        run: echo ORX=%CD%\code>> %GITHUB_ENV%
+        run: echo ORX=$PWD\code>> $GITHUB_ENV
       - name: Setup
-        run: setup.bat
+        run: ./setup.bat
       - name: Build engine
         run: msbuild code\build\windows\vs${{matrix.vs-version}}\orx.sln -m -t:rebuild -property:Configuration=${{matrix.vs-config}}
       - name: Build tutorials
         run: msbuild tutorial\build\windows\vs${{matrix.vs-version}}\tutorial.sln -m -t:rebuild -property:Configuration=${{matrix.vs-config}}
       - name: Create project
-        run: init.bat test
+        run: ./init.bat test
       - name: Build project
         run: msbuild test\build\windows\vs${{matrix.vs-version}}\test.sln -m -t:rebuild -property:Configuration=${{matrix.vs-config}}
       - name: Build core
