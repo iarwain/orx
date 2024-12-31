@@ -51,13 +51,13 @@ jobs:
         os:
           - windows
           - linux
-          - mac
+          # - mac
         config:
           - debug
           # - profile
           # - release
         platform:
-          # - 32
+          - 32
           - 64
         include:
           - os: windows
@@ -93,15 +93,15 @@ jobs:
         run: ./${{matrix.setup}}
       - name: Build engine
         working-directory: code/build/${{matrix.os}}/gmake
-        run: make config=${{matrix.config}}${{matrix.platform}}
+        run: make -j config=${{matrix.config}}${{matrix.platform}}
       - name: Build tutorials
         working-directory: tutorial/build/${{matrix.os}}/gmake
-        run: make config=${{matrix.config}}${{matrix.platform}}
+        run: make -j config=${{matrix.config}}${{matrix.platform}}
       - name: Create project
         run: ./${{matrix.init}} test
       - name: Build project
         working-directory: test/build/${{matrix.os}}/gmake
-        run: make config=${{matrix.config}}${{matrix.platform}}
+        run: make -j config=${{matrix.config}}${{matrix.platform}}
       # - name: Build core
       #   run: msbuild code\build\windows\vs${{matrix.vs-version}}\orx.sln -m -t:rebuild "-property:Configuration=Core ${{matrix.vs-config}}"
       # - name: Build tool - orxCrypt
