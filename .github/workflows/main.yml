@@ -48,7 +48,7 @@ jobs:
     strategy:
       matrix:
         os:
-          # - windows
+          - windows
           - linux
           # - mac
         config:
@@ -59,11 +59,11 @@ jobs:
           - 32
           - 64
         include:
-          # - os: windows
-          #   runner: windows-latest
-          #   setup: setup.bat
-          #   init: init.bat
-          #   make: mingw32-make
+          - os: windows
+            runner: windows-latest
+            setup: setup.bat
+            init: init.bat
+            make: mingw32-make
           - os: linux
             runner: ubuntu-latest
             setup: setup.sh
