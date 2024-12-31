@@ -48,6 +48,10 @@ jobs:
     name: Make
     strategy:
       matrix:
+        os:
+          - windows
+          - linux
+          - mac
         config:
           - debug
           # - profile
