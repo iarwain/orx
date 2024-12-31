@@ -170,12 +170,12 @@ jobs:
     strategy:
       matrix:
         os:
-          # - windows
+          # - windows # Skipping Windows as Emscripten isn't found after installation/activation
           - linux
           - mac
         config:
-          # - debug
-          # - profile
+          - debug
+          - profile
           - release
         include:
           # - os: windows
@@ -183,19 +183,19 @@ jobs:
           #   setup: setup.bat
           #   init: init.bat
           #   make: mingw32-make
-          #   emsdk_emv: emsdk/emsdk_env.bat
+          #   emsdk_env: emsdk/emsdk_env.bat
           - os: linux
             runner: ubuntu-latest
             setup: setup.sh
             init: init.sh
             make: make
-            emsdk_emv: emsdk/emsdk_env.sh
+            emsdk_env: emsdk/emsdk_env.sh
           - os: mac
             runner: macos-latest
             setup: setup.sh
             init: init.sh
             make: make
-            emsdk_emv: emsdk/emsdk_env.sh
+            emsdk_env: emsdk/emsdk_env.sh
     runs-on:
       - ${{matrix.runner}}
     steps:
